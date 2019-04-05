@@ -35,7 +35,7 @@ echo "Setting up MySQL server"
 
 #creating database for SocialBook
 echo "Creating SocialBook database"
- mysql -u root -p"$mysql_password" -e "`cat Create_SocialBook_DB.sql`" > /dev/null
+ mysql -u root -p"$mysql_password" -e "`cat /var/www/html/setup/Create_SocialBook_DB.sql`" > /dev/null
 
 #turn on website services
 echo "Standing up website"
