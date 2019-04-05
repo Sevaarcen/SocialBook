@@ -7,14 +7,14 @@
 echo "Beginning installation"
 #update packages to make sure the install goes properly
 echo "Updating APT"
-sudo apt update > /dev/null
+sudo apt-get update > /dev/null
 
 #install Apache2, PHP, and MySQL
 echo "Installing packages"
-sudo apt install apache2 -y > /dev/null
-sudo apt install php7.2 -y > /dev/null
-sudo apt install php7.2-mysql -y > /dev/null
-sudo apt install mysql -y > /dev/null
+sudo apt-get install apache2 -y > /dev/null
+sudo apt-get install php7.2 -y > /dev/null
+sudo apt-get install php7.2-mysql -y > /dev/null
+sudo apt-get install mysql-server -y > /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
