@@ -7,22 +7,22 @@
 echo "Beginning installation"
 #update packages to make sure the install goes properly
 
-echo "Would you like to add the PHP7.2 repository (this is needed on some systems, like Debian) [Y/n]: "
-read resp
-if [[ "$resp" =~ ^([yY][eE][sS]|[yY])+$ ]]
-then
-  sudo apt-get install apt-transport-https lsb-release ca-certificates
-  wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-fi
-echo "Updating APT"
+#echo "Would you like to add the PHP7.2 repository (this is needed on some systems, like Debian) [Y/n]: "
+#read resp
+#if [[ "$resp" =~ ^([yY][eE][sS]|[yY])+$ ]]
+#then
+#  sudo apt-get install apt-transport-https lsb-release ca-certificates > /dev/null
+#  wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+#  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+#fi
+echo "Updating APT repositories"
 sudo apt-get update > /dev/null
 
 #install Apache2, PHP, and MySQL
 echo "Installing packages"
 sudo apt-get install apache2 -y > /dev/null
-sudo apt-get install php7.2 -y > /dev/null
-sudo apt-get install php7.2-mysql -y > /dev/null
+sudo apt-get install php7.* -y > /dev/null
+sudo apt-get install php7.*-mysql -y > /dev/null
 sudo apt-get install mysql-server -y > /dev/null
 
 #set up MySQL server
@@ -40,9 +40,10 @@ echo "Creating SocialBook database"
 #turn on website services
 echo "Standing up website"
 sudo chown -R www-data:www-data /var/www/html
+sudo a2dismod php* > /dev/null
+sudo a2enmod php7.* > /dev/null
 sudo /etc/init.d/mysql start
 sudo /etc/init.d/apache2 start
-sudo a2enmod php7.2 > /dev/null
 
 #unset variables
  unset mysql_password
