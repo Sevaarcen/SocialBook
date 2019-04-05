@@ -28,12 +28,20 @@ echo "Setting up MySQL server"
 #update password in the PHP 'database.php' file
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
 #proceed with the MySQL secure installation
- printf "$mysql_password\nN\nN\nY\nY\nY\nY\n" | sudo mysql_secure_installation > /dev/null
+ #printf "$mysql_password\nN\nN\nY\nY\nY\nY\n" | sudo mysql_secure_installation > /dev/null
+mysql -u root <<_EOF_
+UPDATE mysql.user SET Password=PASSWORD("$mysql_password") WHERE User='root';
+DELETE FROM mysql.user WHERE User='';
+DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');
+DROP DATABASE IF EXISTS test;
+DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+FLUSH PRIVILEGES;
+_EOF
 
 
 #creating database for SocialBook
 echo "Creating SocialBook database"
- mysql -u root -p"$mysql_password" -e "`cat /var/www/html/setup/Create_SocialBook_DB.sql`" > /dev/null
+ mysql -u root -p"$mysql_password" -e "`cat /var/www/html/setup/Create_SocialBook_DB.sql`"
 
 #turn on website services
 echo "Standing up website"
