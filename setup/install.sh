@@ -30,11 +30,9 @@ echo "Creating SocialBook database"
 
 #turn on website services
 echo "Standing up website"
+sudo /etc/init.d/mysql start
+sudo /etc/init.d/apache2 start
 sudo a2enmod php7.2 > /dev/null
-sudo systemctl enable mysql > /dev/null
-sudo systemctl start mysql > /dev/null
-sudo systemctl enable apache2 > /dev/null
-sudo systemctl start apache2 > /dev/null
 
 #unset variables
  unset mysql_password
