@@ -10,10 +10,10 @@ echo "Beginning installation"
 echo "Would you like to add the PHP7.2 repository (this is needed on some systems, like Debian) [Y/n]: "
 read resp
 if [[ "$resp" =~ ^([yY][eE][sS]|[yY])+$ ]]
+then
   sudo apt-get install apt-transport-https lsb-release ca-certificates
   wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
   echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-fi
 
 echo "Updating APT"
 sudo apt-get update > /dev/null
