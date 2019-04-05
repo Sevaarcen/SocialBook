@@ -24,7 +24,7 @@ sudo apt-get install mariadb-server -y > /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
- mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_`{|}~' | head -c 24`
+ mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_{|}~' | head -c 24`
 #update password in the PHP 'database.php' file
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
 #proceed with the MySQL secure installation
