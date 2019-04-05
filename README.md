@@ -15,6 +15,12 @@ sudo git clone https://github.com/Sevaarcen/SocialBook.git .
 sudo bash ./setup/install.sh
 ```
 
+One it's installed, you can login to the website using the following credentials:
+```
+Username: admin
+Password: c0nn3ction$
+```
+
 ### Requirements
 Please refer to the **Installation** section. If installing from the script, no need to install the requirements beforehand.
 * Linux OS (Ubuntu 18.04 LTS recommended)
