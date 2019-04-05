@@ -1,9 +1,6 @@
 #!/bin/bash
 #commands which use the mysql_password have a space beforehand to remove them from bash history, just in case
 
- echo "Password to use for MySQL root account: "
- read mysql_password
-
 echo "Beginning installation"
 #update packages to make sure the install goes properly
 
