@@ -32,7 +32,7 @@ echo "Setting up MySQL server"
  sudo mysqld_safe --skip-grant-tables --skip-networking & > /dev/null
 #update root password with the randomly generated password
  sudo mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
- sudo /etc/init.d/mysql start
+ sudo /etc/init.d/mysql start  > /dev/null
 #delete anonymous users
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
 #remove ability for remote root login

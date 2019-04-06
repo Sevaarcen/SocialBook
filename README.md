@@ -16,7 +16,7 @@ sudo git clone https://github.com/Sevaarcen/SocialBook.git /var/www/html
 sudo bash ./setup/install.sh
 ```
 
-One it's installed, you can create a new account
+One it's installed, you can create a new account using false information or use the admin account below.
 ```
 Default admin credentials
 Username: admin
@@ -29,3 +29,10 @@ Please refer to the **Installation** section. If installing from the script, no 
 * Apache2 (tested on version 2.4.29-1ubuntu4.5)
 * php7.X with mysqli (tested on php7.2 and php7.3)
 * mariadb (tested on version 10.3.12)
+
+### Troubleshooting
+* I already have MySQL/MariaDB installed
+  * Uninstall it, if you already have MariaDB installed make sure to shut it down beforehand. Use the command below to shut down the MariaDB server
+  * ```mysqladmin -u root -p shutdown```
+
+If your issue isn't listed, please open a new issue on GitHub
