@@ -29,9 +29,10 @@ echo "Setting up MySQL server"
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
 #change password
-sudo /etc/init.d/mysql start > /dev/null
+ sudo mysqld_safe --skip-grant-tables --skip-networking & > /dev/null
 #update root password with the randomly generated password
  sudo mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
+ sudo /etc/init.d/mysql start
 #delete anonymous users
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
 #remove ability for remote root login
