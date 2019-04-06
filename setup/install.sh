@@ -24,19 +24,21 @@ sudo apt-get install mariadb-server -y > /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
- mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9!"#$%&'\''()*+,-./:;<=>?@[\]^_{|}~' | head -c 24`
+ mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9#&()*+,-./:;<=>?@[\]^_{|}~' | head -c 24`
 #update password in the PHP 'database.php' file
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
-#proceed with the MySQL secure installation
- #printf "$mysql_password\nN\nN\nY\nY\nY\nY\n" | sudo mysql_secure_installation > /dev/null
-mysql -u root <<_EOF_
-UPDATE mysql.user SET Password=PASSWORD("$mysql_password") WHERE User='root';
-DELETE FROM mysql.user WHERE User='';
-DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');
-DROP DATABASE IF EXISTS test;
-DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-FLUSH PRIVILEGES;
-_EOF
+#non-interactive mysql secure installation
+#change password
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_password';" > /dev/null
+#delete anonymous users
+mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
+#remove ability for remote root login
+mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');" > /dev/null
+#delete any test databases
+mysql -u root -p"$mysql_password" -e "DROP DATABASE IF EXISTS test;" > /dev/null
+mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';" > /dev/null
+#update any provilege changes
+mysql -u root -p"$mysql_password" -e "FLUSH PRIVILEGES;" > /dev/null
 
 
 #creating database for SocialBook
