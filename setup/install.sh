@@ -16,11 +16,11 @@ echo "Updating APT repositories"
 sudo apt-get update > /dev/null
 
 #install Apache2, PHP, and MySQL
-echo "Installing packages (Ignore errors on Debian)"
-sudo apt-get install apache2 -y > /dev/null
-sudo apt-get install php7.* -y > /dev/null
-sudo apt-get install php7.*-mysql -y > /dev/null
-sudo apt-get install mariadb-server -y > /dev/null
+echo "Installing packages"
+sudo apt-get install apache2 -y &> /dev/null
+sudo apt-get install php7.* -y &> /dev/null
+sudo apt-get install php7.*-mysql -y &> /dev/null
+sudo apt-get install mariadb-server -y &> /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
@@ -29,16 +29,17 @@ echo "Setting up MySQL server"
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
 #change password
-mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysql_password';" > /dev/null
+sudo /etc/init.d/mysql start > /dev/null
+ sudo mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '`echo $mysql_password`'; FLUSH PRIVILEGES;" > /dev/null
 #delete anonymous users
-mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
+ mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
 #remove ability for remote root login
-mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');" > /dev/null
+ mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='root' AND HOST NOT IN ('localhost', '127.0.0.1', '::1');" > /dev/null
 #delete any test databases
-mysql -u root -p"$mysql_password" -e "DROP DATABASE IF EXISTS test;" > /dev/null
-mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';" > /dev/null
+ mysql -u root -p"$mysql_password" -e "DROP DATABASE IF EXISTS test;" > /dev/null
+ mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';" > /dev/null
 #update any provilege changes
-mysql -u root -p"$mysql_password" -e "FLUSH PRIVILEGES;" > /dev/null
+ mysql -u root -p"$mysql_password" -e "FLUSH PRIVILEGES;" > /dev/null
 
 
 #creating database for SocialBook
@@ -50,7 +51,7 @@ echo "Standing up website"
 sudo chown -R www-data:www-data /var/www/html
 sudo a2dismod php* > /dev/null
 sudo a2enmod php7.* > /dev/null
-sudo /etc/init.d/mysql start
+sudo /etc/init.d/mysql restart
 sudo /etc/init.d/apache2 start
 
 #unset variables
