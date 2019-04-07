@@ -28,12 +28,16 @@ echo "Setting up MySQL server"
 #update password in the PHP 'database.php' file
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
-#change password
- sudo mysqld_safe --skip-grant-tables --skip-networking & > /dev/null
+ sudo /etc/init.d/mysql stop &> /dev/null #ensure mysql is stopped
+ sudo pkill -9 mysqld &> /dev/null #ensure mysql daemon is fully shutdown
+ sleep 0.5
+ sudo mysqld_safe --skip-grant-tables --skip-networking & &> /dev/null #start mysql daemon without checking passwords
+ sleep 1 #lazy way to wait for mysql daemon to start
 #update root password with the randomly generated password
  sudo mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
- sudo pkill -9 mysqld > /dev/null
- sudo /etc/init.d/mysql start > /dev/null
+ sleep 0.5
+ sudo pkill -9 mysqld &> /dev/null #kill mysql daemon that doesn't check passwords
+ sudo /etc/init.d/mysql start > /dev/null #start a mysql properly
 #delete anonymous users
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
 #remove ability for remote root login
