@@ -34,5 +34,8 @@ Please refer to the **Installation** section. If installing from the script, no 
 * I already have MySQL/MariaDB installed
   * Uninstall it, if you already have MariaDB installed make sure to shut it down beforehand. Use the command below to shut down the MariaDB server
   * ```mysqladmin -u root -p shutdown```
+* I'm unable to install the packages on Kali
+  * Kali doesn't come with the sources by default for some reason. Follow the instructions below
+  * https://docs.kali.org/general-use/kali-linux-sources-list-repositories
 
 If your issue isn't listed, please open a new issue on GitHub
