@@ -17,10 +17,10 @@ sudo apt-get update > /dev/null
 
 #install Apache2, PHP, and MySQL
 echo "Installing packages"
-sudo apt-get install apache2 -y &> /dev/null
-sudo apt-get install php7.* -y &> /dev/null
-sudo apt-get install php7.*-mysql -y &> /dev/null
-sudo apt-get install mariadb-server -y &> /dev/null
+sudo apt-get install apache2 -y 2> /dev/null
+sudo apt-get install php7.* -y 2> /dev/null
+sudo apt-get install php7.*-mysql -y 2> /dev/null
+sudo apt-get install mariadb-server -y 2> /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
