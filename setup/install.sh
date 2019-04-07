@@ -3,24 +3,15 @@
 
 echo "Beginning installation"
 #update packages to make sure the install goes properly
-
-#echo "Would you like to add the PHP7.2 repository (this is needed on some systems, like Debian) [Y/n]: "
-#read resp
-#if [[ "$resp" =~ ^([yY][eE][sS]|[yY])+$ ]]
-#then
-#  sudo apt-get install apt-transport-https lsb-release ca-certificates > /dev/null
-#  wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-#  echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-#fi
 echo "Updating APT repositories"
-sudo apt-get update > /dev/null
+sudo apt-get update > /dev/null #update repository information to ensure the packages can be installed
 
 #install Apache2, PHP, and MySQL
 echo "Installing packages"
-sudo apt-get install apache2 -y &> /dev/null
-sudo apt-get install php7.* -y &> /dev/null
-sudo apt-get install php7.*-mysql -y &> /dev/null
-sudo apt-get install mariadb-server -y &> /dev/null
+sudo apt-get install apache2 -y &> /dev/null #apache2 is the web server itself
+sudo apt-get install php7.* -y &> /dev/null #installing everything due to issues with different Linux distros
+sudo apt-get install php7.*-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
+sudo apt-get install mariadb-server -y &> /dev/null #install mariadb since that is better supported afaik
 
 #set up MySQL server
 echo "Setting up MySQL server"
@@ -35,9 +26,9 @@ echo "Setting up MySQL server"
  sleep 1 #lazy way to wait for mysql daemon to start
 #update root password with the randomly generated password
  sudo mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
- sleep 0.5
+ sleep 0.5 #making sure the query has time to execute and change the password
  sudo pkill -9 mysqld &> /dev/null #kill mysql daemon that doesn't check passwords
- sudo /etc/init.d/mysql start > /dev/null #start a mysql properly
+ sudo /etc/init.d/mysql start > /dev/null #start mysql with the new password
 #delete anonymous users
  mysql -u root -p"$mysql_password" -e "DELETE FROM mysql.user WHERE User='';" > /dev/null
 #remove ability for remote root login
@@ -51,7 +42,7 @@ echo "Setting up MySQL server"
 
 #creating database for SocialBook
 echo "Creating SocialBook database"
- mysql -u root -p"$mysql_password" -e "`cat /var/www/html/setup/Create_SocialBook_DB.sql`"
+ mysql -u root -p"$mysql_password" -e "`cat /var/www/html/setup/*.sql`" #will run any .sql files that are part of the setup
 
 #turn on website services
 echo "Standing up website"
