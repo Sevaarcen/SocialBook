@@ -9,6 +9,6 @@ $connection = mysqli_connect($mysql_server, $mysql_username, $mysql_password, $d
 
 // Check connection
 if (mysqli_connect_errno()) {
-    die("Connection failed: " . $conn->connect_error);
+    die("Connection failed: " . $connection->connect_error);
 }
 ?>
