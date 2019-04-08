@@ -27,12 +27,14 @@ git -C /var/www/html/ reset --hard origin/master &> /dev/null
 echo "Instantiating MySQL Database"
 rm -rf /var/lib/mysql/*
 mysqld --initialize &> /dev/null
+mysql_install_db &> /dev/null
+sleep 1
 
 #set up MySQL server
 echo "Setting up MySQL server"
  mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9#&()*+,-.:;<=>?@[\]^_{|}~' | head -c 24`
 #update password in the PHP 'database.php' file
- cat /var/www/html/database.php | sed "s/\$mysql_password = \"[^\"]*\";/\$mysql_password = \"$mysql_password\";/" | tee /var/www/html/database.php > /dev/null
+ cat /var/www/html/database.php | sed "s/^\$mysql_password = \"[^\"]*\";$/^\$mysql_password = \"$mysql_password\";$/" | tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
  /etc/init.d/mysql stop &> /dev/null #ensure mysql is stopped
  pkill -9 mysqld &> /dev/null #ensure mysql daemon is fully shutdown
