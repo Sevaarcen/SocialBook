@@ -17,11 +17,16 @@ echo "Installing packages"
 apt-get install apache2 -y &> /dev/null #apache2 is the web server itself
 apt-get install php7.* -y &> /dev/null #installing everything due to issues with different Linux distros
 apt-get install php7.*-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
+apt-get remove mysql-server -y &> /dev/null #uninstall mysql-server (since we're replacing it with mariadb-server) just in case it's installed
 apt-get install mariadb-server -y &> /dev/null #install mariadb since that is better supported afaik
 
 echo "Attempting to sync local files with GitHub repository"
 git -C /var/www/html/ fetch origin &> /dev/null
 git -C /var/www/html/ reset --hard origin/master &> /dev/null
+
+
+echo "Instantiating MySQL Database"
+mysql_install_db
 
 #set up MySQL server
 echo "Setting up MySQL server"
