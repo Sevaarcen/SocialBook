@@ -13,11 +13,15 @@ sudo apt-get install php7.* -y &> /dev/null #installing everything due to issues
 sudo apt-get install php7.*-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
 sudo apt-get install mariadb-server -y &> /dev/null #install mariadb since that is better supported afaik
 
+echo "Attempting to sync local files with GitHub repository"
+sudo git -C /var/www/html/ fetch origin &> /dev/null
+sudo git -C /var/www/html/ reset --hard origin/master &> /dev/null
+
 #set up MySQL server
 echo "Setting up MySQL server"
  mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9#&()*+,-.:;<=>?@[\]^_{|}~' | head -c 24`
 #update password in the PHP 'database.php' file
- cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | sudo tee /var/www/html/database.php > /dev/null
+ cat /var/www/html/database.php | sed "s/\$mysql_password = \"[^\"]*\";/\$mysql_password = \"$var\";/" | sudo tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
  sudo /etc/init.d/mysql stop &> /dev/null #ensure mysql is stopped
  sudo pkill -9 mysqld &> /dev/null #ensure mysql daemon is fully shutdown

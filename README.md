@@ -16,6 +16,8 @@ sudo git clone https://github.com/Sevaarcen/SocialBook.git /var/www/html
 sudo bash ./setup/install.sh
 ```
 
+**NOTE**: As long as you don't remove the .git directory, the install script can be rerun to reset SocialBook.
+
 One it's installed, you can create a new account using false information or use the admin account below.
 ```
 Default admin credentials
