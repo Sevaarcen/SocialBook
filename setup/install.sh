@@ -15,8 +15,8 @@ apt-get update > /dev/null #update repository information to ensure the packages
 #install Apache2, PHP, and MySQL
 echo "Installing packages"
 apt-get install apache2 -y &> /dev/null #apache2 is the web server itself
-apt-get install php7.* -y &> /dev/null #installing everything due to issues with different Linux distros
-apt-get install php7.*-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
+apt-get install php7\.[0-9]+ -y &> /dev/null #installing everything due to issues with different Linux distros
+apt-get install php7\.[0-9]+-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
 apt-get install mariadb-server -y &> /dev/null #install mariadb since that is better supported afaik
 
 echo "Attempting to sync local files with GitHub repository"
@@ -25,7 +25,8 @@ git -C /var/www/html/ reset --hard origin/master &> /dev/null
 
 
 echo "Instantiating MySQL Database"
-mysql_install_db
+rm -rf /var/lib/mysql/*
+mysqld --initialize &> /dev/null
 
 #set up MySQL server
 echo "Setting up MySQL server"
