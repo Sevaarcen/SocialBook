@@ -1,7 +1,7 @@
 #!/bin/bash
 #commands which use the mysql_password have a space beforehand to remove them from bash history, just in case
 
-if [[`id -u` -ne 0]]
+if [[$(id -u) -ne 0]]
 then
   echo "This script must be run as root, or using 'sudo'"
   exit 1
