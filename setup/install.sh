@@ -32,7 +32,7 @@ sleep 1
 
 #set up MySQL server
 echo "Setting up MySQL server"
- mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9#&()*+,-.:;<=>?@[\]^_{|}~' | head -c 24`
+ mysql_password=`head /dev/urandom | tr -dc 'A-Za-z0-9_-' | head -c 36`
 #update password in the PHP 'database.php' file
  cat /var/www/html/database.php | sed s/CHANGEME/$mysql_password/ | tee /var/www/html/database.php > /dev/null
 #non-interactive mysql secure installation
