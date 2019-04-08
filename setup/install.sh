@@ -42,6 +42,7 @@ echo "Setting up MySQL server"
 #update root password with the randomly generated password
  mysql -u root -e "UPDATE mysql.user SET plugin='mysql_native_password', Password=PASSWORD(\"$mysql_password\") WHERE User='root'; FLUSH PRIVILEGES;" > /dev/null
  sleep 0.5 #making sure the query has time to execute and change the password
+ echo "MySQL root password changed"
  pkill -9 mysqld &> /dev/null #kill mysql daemon that doesn't check passwords
  /etc/init.d/mysql start > /dev/null #start mysql with the new password
 #delete anonymous users
