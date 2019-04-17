@@ -2,7 +2,7 @@
 	<head>
 	</head>
 	<body>
-	
+
 	<style>
 		table {
 			width: 100%;
@@ -23,7 +23,7 @@
 		ob_end_flush();
 		die();
 	}
-	
+
 	if ($_SERVER['REQUEST_METHOD'] != "POST") {
 		echo '<form action="post.php" method="post" id="post_form">';
 			echo '<table>';
@@ -37,7 +37,7 @@
 		echo '</form>';
 		exit();
 	}
-	
+
 	$username = $_SESSION['username'];
 	$content = $_POST['content'];
 	$sanitized_content = preg_replace("#</?[sS][cC][rR][iI][pP][tT]>#", "", $content);
@@ -45,7 +45,7 @@
 	# add post
 	require 'database.php';
 	$query = "INSERT INTO Posts (posted_on, posted_by, content) VALUES (NOW(), '$username', '$sanitized_content');";
-	$result = mysqli_query($connection, $query);
+	$result = mysqli_multi_query($connection, $query);
 
 	$end_url = "index.php";
 	ob_start();
