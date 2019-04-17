@@ -13,11 +13,15 @@ echo "Updating APT repositories"
 apt-get update > /dev/null #update repository information to ensure the packages can be installed
 
 #install Apache2, PHP, and MySQL
-echo "Installing packages"
-apt-get install apache2 -y &> /dev/null #apache2 is the web server itself
-apt-get install php7\.[0-9]+ -y &> /dev/null #installing everything due to issues with different Linux distros
-apt-get install php7\.[0-9]+-mysql -y &> /dev/null #ensuring mysqli was installed with the previous command
-apt-get install mariadb-server -y &> /dev/null #install mariadb since that is better supported afaik
+echo "Installing packages:"
+echo "- apache2"
+apt-get install apache2 -y > /dev/null #apache2 is the web server itself
+echo "- php7.X"
+apt-get install php7\.[0-9]+ -y > /dev/null #installing everything due to issues with different Linux distros
+echo "- php7.X-mysqli"
+apt-get install php7\.[0-9]+-mysql -y > /dev/null #ensuring mysqli was installed with the previous command
+echo "- mariadb-server"
+apt-get install mariadb-server -y > /dev/null #install mariadb since that is better supported afaik
 
 echo "Attempting to sync local files with GitHub repository"
 git -C /var/www/html/ fetch origin &> /dev/null
