@@ -74,6 +74,10 @@ a2enmod php7.* > /dev/null
 /etc/init.d/mysql restart
 /etc/init.d/apache2 start
 
+echo "Setting SocialBook to start automatically"
+systemctl enable apache2 > /dev/null
+systemctl enable mysql > /dev/null
+
 #unset variables
  unset mysql_password
 
